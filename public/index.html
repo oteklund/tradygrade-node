@@ -3,11 +3,21 @@
 <head>
   <title>Express</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
   <h1>Express</h1>
-  <p>Welcome to Express</p>
+  <p>Welcome to Expressi</p>
+  <div id="myChat">
+    <div id="chatWindow">
+      <div id="output"></div>
+    </div>
+    <input id="user" type="text" placeholder="User">
+    <input id="message" type="text" placeholder="Message">
+    <button id="send">Send</button>
+  </div>
+  <script src="./index.js"></script>
 </body>
 
 </html>
