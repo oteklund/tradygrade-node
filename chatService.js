@@ -20,10 +20,12 @@ const conopts = {
 
 const pool = new Pool(conopts);
 
-// const getAll = (cb) => {
-//     pool.query('SELECT * from beans ORDER BY id DESC', (err, results) => {
-//         if (err) throw err;
-//         console.dir(results);
-//         cb(results.rows);
-//     })
-// }
+const getAll = (cb) => {
+    pool.query('SELECT * from users ORDER BY id DESC', (err, results) => {
+        if (err) throw err;
+        console.dir(results);
+        cb(results.rows);
+    })
+}
+
+module.exports= {getAll};
