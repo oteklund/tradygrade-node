@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS chatter(
     FOREIGN KEY (chatter_chat_id) REFERENCES chat(chat_id)
     );
 
+
 CREATE TABLE IF NOT EXISTS msg(
 msg_id SERIAL PRIMARY KEY NOT NULL,
 msg_user_id INT NOT NULL,
@@ -49,3 +50,4 @@ CREATE TABLE IF NOT EXISTS item(
     item_picture VARCHAR(240),
     FOREIGN KEY (item_seller_id) REFERENCES users(user_id)
 );
+

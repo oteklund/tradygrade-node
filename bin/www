@@ -7,27 +7,46 @@
 var app = require('../app');
 var debug = require('debug')('tradygrade-node:server');
 var http = require('http');
+require('dotenv').config();
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || process.env.APP_PORT);
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+});
+app.on('error', onError);
+app.on('listening', onListening);
+
+/**
+ * Create HTTP server for chat.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided chatport, on all network interfaces.
+ */
+
+server.listen((process.env.SOCKET_IO_PORT), () => {
+  console.log(`Server running on port ${process.env.SOCKET_IO_PORT}`)
+});
+
+/**
+ * Socket.io
+ */
+var socketApi = require('../chatSocket');
+var io = socketApi.io;
+io.attach(server);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -82,7 +101,7 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = app.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
