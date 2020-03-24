@@ -26,7 +26,7 @@ router
   .get(async (req, res, next) => {
     try {
       console.log("Looking for the one!")
-      let userData = await getUser();
+      let userData = await getUser(req.params.id);
       console.log(userData);
       res.json(userData);
     } catch (err) {
