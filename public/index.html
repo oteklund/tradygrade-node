@@ -1,17 +1,19 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-  <title>Express</title>
+  <meta charset="utf-8">
+  <title>WebScockets</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Expressi</p>
   <div id="myChat">
+    <h3>Chat</h3>
     <div id="chatWindow">
       <div id="output"></div>
+      <div id="feedback"></div>
     </div>
     <input id="user" type="text" placeholder="User">
     <input id="message" type="text" placeholder="Message">

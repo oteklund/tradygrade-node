@@ -9,11 +9,11 @@ io.on('connection', function(socket){
 
     socket.on('chat', (data) => {
         io.sockets.emit('chat', data);
+    });
+
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('typing', data)
     })
 });
-
-// socketApi.sendNotification = function() {
-//     io.sockets.emit('hello', {msg: 'Hello World!'});
-// }
 
 module.exports = socketApi;
