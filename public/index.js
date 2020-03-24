@@ -1,5 +1,5 @@
 // Create connection to socket
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect("http://localhost:9000");
 
 const message = document.getElementById('message');
 const user = document.getElementById('user');
