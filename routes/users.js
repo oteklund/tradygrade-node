@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers } = require('../dao/usersDao');
+const { getUsers, getUser } = require('../dao/usersDao');
 
 router
   .route('/')
@@ -25,6 +25,10 @@ router
   .route('/:id')
   .get(async (req, res, next) => {
     try {
+      console.log("Looking for the one!")
+      let userData = await getUser();
+      console.log(userData);
+      res.json(userData);
     } catch (err) {
       next(err);
     }
