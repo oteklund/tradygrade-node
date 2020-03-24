@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const { getUsers } = require('../dao/usersDao');
 
 router
   .route('/')
   .get(async (req, res, next) => {
     try {
+      console.log('suoritetaan');
+      let usersData = await getUsers();
+      console.log(usersData);
+      res.json(usersData);
     } catch (err) {
       next(err);
     }
