@@ -12,7 +12,6 @@ router
   .route('/')
   .get(async (req, res, next) => {
     try {
-      console.log('suoritetaan');
       let items = await getItems();
       if (items) {
         res.json(items);
@@ -27,8 +26,9 @@ router
   .post(async (req, res, next) => {
     try {
       let response = await createItem(req.body);
+      console.log(response);
       if (response) {
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, id: response });
       } else {
         res.status(400);
       }
@@ -72,7 +72,7 @@ router
       if (response) {
         res.status(200).json({ success: true });
       } else {
-        res.status(400);
+        res.status(400).json({ error: 'Id not found!' });
       }
     } catch (err) {
       res.status(500);
