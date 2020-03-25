@@ -46,9 +46,12 @@ router
       const passwordIsCorrect = hashService.passwordCompare(password, foundUser.password)
       if (passwordIsCorrect == null) throw "Error handling login, please try again later"
       
+      // in case authentication succeeds, we generate and return a jwt + refresh token. refresh tokens are currently stored locally in an array, but will be moved to a db.
       if (passwordIsCorrect){
-        const newToken = jwtService.generateToken(foundUser)
-        res.status(200).json({...foundUser, token: newToken}) 
+        const token = jwtService.generateToken(foundUser)
+        const refreshToken = jwtService.refreshToken(foundUser)
+        jwtService.refreshTokens.push(refreshToken) // <- move to db
+        res.status(200).json({...foundUser, token: token, refreshToken: refreshToken}) 
       } else {
         res.status(400).send("Invalid credentials") 
       }
@@ -57,6 +60,25 @@ router
       next(err)
     }
   })
+
+  router
+    .route("/logout")
+    .delete(async (req, res, next) => {
+      jwtService.deleteRefreshToken(req.body.refreshToken)
+      res.status(204).send()
+    })
+
+  router
+    .route("/token")
+    .post(async (req, res, next) => {
+      const refreshToken = req.body.refreshToken
+      if (refreshToken == null) res.status(401).send()
+      if (!jwtService.refreshTokens.includes(refreshToken)) res.status(403).send()
+      const newToken = jwtService.verifyRefreshToken(refreshToken)
+      if (newToken == null) res.status(403).send()
+      
+      res.json({ token: newToken })
+    })
 
 router
   .route('/:id')
