@@ -1,5 +1,5 @@
 const pool = require('./poolConnection');
-const User = require('./models/User');
+const User = require('../models/User');
 
 exports.getUsers = async () => {
   try {
@@ -7,7 +7,7 @@ exports.getUsers = async () => {
     );
     let users = [];
     for (let row of response.rows) {
-      let user = new user(
+      let user = new User(
         row.user_id,
         row.user_name,
         row.user_password,
@@ -17,8 +17,7 @@ exports.getUsers = async () => {
       users = [...users, user];
     }
     return users;
-  } catch{
-    (err)
+  } catch (err){
     console.error(err.message);
     return null;
   };
