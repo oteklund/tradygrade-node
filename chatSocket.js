@@ -5,19 +5,22 @@ let socketApi = {};
 
 
 
-io.on('connection', (socket) => {
-    console.log('Connected', socket.id);
-    socket.on('joinChat', ({user, chatID}) => {
-        socket.join(chatID)
+io.on('connection', socket => {
+    console.log('Connected', socket.id)
 
-        socket.emit('join', 'Welcome user')
+    socket.emit('join', ({user, chatID}) => {
+        socket.join(chatID)
+        console.log(`${user} joined chat ${chatID}`)
 
         //User online
         socket.broadcast.to(chatID).emit('user online', `${user} is online`)
-
+    
         //Usert typing a message
         socket.on('typing', (user) => {socket.broadcast.to(chatID).emit('typing', user)})
     })
+
+    // socket.emit('join', 'Welcome user')
+
 
     //Listening for chatMessage
     socket.on('chatMessage', message => {
