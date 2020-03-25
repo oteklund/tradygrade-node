@@ -41,6 +41,26 @@ exports.getUser = async id => {
   }
 };
 
+exports.getUserByName = async name => {
+  try {
+    let response = await pool.query("SELECT * FROM users WHERE user_name=$1", [name])
+    if (response.rows.length === 0) {
+      return null
+    }
+    let user = new User(
+      response.rows[0].user_id,
+      response.rows[0].user_name,
+      response.rows[0].user_password,
+      response.rows[0].user_email,
+      response.rows[0].user_picture
+    )
+    return user
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+}
+
 exports.updateUser = async (id, user) => {
   try {
     const { name, password, email, picture } = user;
@@ -53,6 +73,7 @@ exports.updateUser = async (id, user) => {
   } catch (err) {
     console.error(err.message);
     return null;
+
   }
 };
 
