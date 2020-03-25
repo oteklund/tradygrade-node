@@ -17,7 +17,7 @@ exports.getUsers = async () => {
       users = [...users, user];
     }
     return users;
-  } catch (err){
+  } catch (err) {
     console.error(err.message);
     return null;
   };
@@ -43,7 +43,25 @@ exports.getUser = async id => {
   }
 };
 
-
+exports.getUserByName = async name => {
+  try {
+    let response = await pool.query("SELECT * FROM users WHERE user_name=$1", [name])
+    if (!response.rows.length === 0) {
+      return null
+    }
+    let user = new User(
+      response.rows[0].user_id,
+      response.rows[0].user_name,
+      response.rows[0].user_password,
+      response.rows[0].user_email,
+      response.rows[0].user_picture
+    )
+    return user
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+}
 
 exports.updateUser = async (id, user) => {
   try {
@@ -66,10 +84,10 @@ exports.updateUser = async (id, user) => {
       ]
     );
     return response.rows;
-  } catch(err) {
+  } catch (err) {
     console.error(err.message);
     return null;
-   };
+  };
 };
 
 exports.createUser = async (newUser) => {
@@ -81,9 +99,9 @@ exports.createUser = async (newUser) => {
 
     let response = await pool.query('INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4)',
       [name,
-      password,
-      email,
-      picture
+        password,
+        email,
+        picture
       ]
     );
     return response.rows;
@@ -93,11 +111,11 @@ exports.createUser = async (newUser) => {
   }
 }
 
-exports.deleteUser = async id =>{
-  try{
+exports.deleteUser = async id => {
+  try {
     let response = await pool.query('DELETE FROM users WHERE user_id=$1', [id]);
     return response.rows;
-  }catch (err){
+  } catch (err) {
     console.error(err.message);
     return null;
   }
