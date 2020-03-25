@@ -27,8 +27,9 @@ router
   .post(async (req, res, next) => {
     try {
       let response = await createItem(req.body);
+      console.log(response);
       if (response) {
-        res.status(201).json({ success: true });
+        res.status(201).json({ success: true, id: response });
       } else {
         res.status(400);
       }
@@ -69,10 +70,11 @@ router
   .delete(async (req, res, next) => {
     try {
       let response = await deleteItem(req.params.id);
+      console.log(response);
       if (response) {
         res.status(200).json({ success: true });
       } else {
-        res.status(400);
+        res.status(400).json({ error: 'Id not found!' });
       }
     } catch (err) {
       res.status(500);
