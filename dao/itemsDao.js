@@ -110,7 +110,7 @@ exports.createItem = async item => {
     } = item;
 
     let response = await pool.query(
-      'INSERT INTO item (item_name, item_description, item_sold, item_seller_id, item_category, item_price, item_listed_at, item_expires, item_condition, item_picture ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+      'INSERT INTO item (item_name, item_description, item_sold, item_seller_id, item_category, item_price, item_listed_at, item_expires, item_condition, item_picture ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING item_id',
       [
         name,
         description,
@@ -124,7 +124,9 @@ exports.createItem = async item => {
         pictureURL
       ]
     );
-    return response.rows;
+    const newId = response.rows[0].item_id;
+    console.log(newId);
+    return newId;
   } catch (err) {
     console.error(err.message);
     return null;
@@ -132,8 +134,15 @@ exports.createItem = async item => {
 };
 exports.deleteItem = async id => {
   try {
-    let response = await pool.query('DELETE from item WHERE item_id=$1', [id]);
-    return response.rows;
+    let response = await pool.query(
+      'DELETE from item WHERE item_id=$1 RETURNING *',
+      [id]
+    );
+    if (response.rows.length === 0) {
+      return null;
+    } else {
+      return response.rows;
+    }
   } catch (err) {
     console.error(err.message);
     return null;
