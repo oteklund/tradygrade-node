@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers, getUser } = require('../dao/usersDao');
+const { getUsers, getUser, createUser } = require('../dao/usersDao');
 const { getItemsByUserId } = require('../dao/itemsDao');
+const User = require("../models/User")
+const hashService = require("../auth/hashService")
 
 router
   .route('/')
@@ -17,6 +19,11 @@ router
   })
   .post(async (req, res, next) => {
     try {
+      const { name, email, picture} = req.body
+      const hashedPassword = await hashService.hash(req.body.password)
+      const user = new User(id = null, name, hashedPassword, email, picture) //initialize new user with id null (database generates id)
+      await createUser(user)
+      res.status(201).send()
     } catch (err) {
       next(err);
     }
