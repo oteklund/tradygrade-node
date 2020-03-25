@@ -1,0 +1,13 @@
+GET http://localhost:4000/api/users
+
+###
+
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+    "name": "Ramses",
+    "password": "meow",
+    "email": "ram@catmail.mew",
+    "picture": "https://img.url"
+}
