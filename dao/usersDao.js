@@ -46,26 +46,45 @@ exports.getUser = async id => {
 
 
 
-exports.updateUser = async (id, user)=>{
+exports.updateUser = async (id, user) => {
   try {
     const {
+      name,
+      password,
+      email,
+      picture
 
-    }
-  }catch{}
-}
+    } = user;
+
+    let response = await pool.query(
+      'UPDATE users SET user_name=$1, user_password=$2, user_email=$3, user_picture=$4 WHERE user_id=$5',
+      [
+        name,
+        password,
+        email,
+        picture,
+        id
+      ]
+    );
+    return response.rows;
+  } catch(err) {
+    console.error(err.message);
+    return null;
+   };
+};
 
 exports.createUser = async (newUser) => {
   try {
-    const { user_name,
-      user_password,
-      user_email,
-      user_picture } = newUser;
+    const { name,
+      password,
+      email,
+      picture } = newUser;
 
     let response = await pool.query('INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4)',
-      [user_name,
-        user_password,
-        user_email,
-        user_picture
+      [name,
+      password,
+      email,
+      picture
       ]
     );
     return response.rows;
@@ -74,3 +93,13 @@ exports.createUser = async (newUser) => {
     return null;
   }
 }
+
+exports.deleteUser = async id =>{
+  try{
+    let response = await pool.query('DELETE FROM users WHERE user_id=$1', [id]);
+    return response.rows;
+  }catch (err){
+    console.error(err.message);
+    return null;
+  }
+};
