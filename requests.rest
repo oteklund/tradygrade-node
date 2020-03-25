@@ -1,5 +1,5 @@
 GET http://localhost:4000/api/users
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUmFtc2VzIiwicGFzc3dvcmQiOiIkMmEkMTAkN2czN2pvZWNoRFA5ekZueW4vUDB0ZVIwdEpWdXpMMk5tNDUyVWtNMTIxVkRER3VBUHRHd1MiLCJpYXQiOjE1ODUxNDMyODIsImV4cCI6MTU4NTE0NTA4Mn0.XFvC-6RT3JhPnRsko01Es3kyenL3NrwGOUk_DrNfKdk
 ###
 
 POST http://localhost:4000/api/users
@@ -20,4 +20,22 @@ Content-Type: application/json
 {
     "name": "Ramses",
     "password": "meow"
+}
+
+###
+
+POST http://localhost:4000/api/users/token
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUmFtc2VzIiwicGFzc3dvcmQiOiIkMmEkMTAkN2czN2pvZWNoRFA5ekZueW4vUDB0ZVIwdEpWdXpMMk5tNDUyVWtNMTIxVkRER3VBUHRHd1MiLCJpYXQiOjE1ODUxNDMyNTF9.2tziPfEtGH03B9wYatjzL-o28ZAmLh0MLdZQkci52DE"
+}
+
+###
+
+DELETE http://localhost:4000/api/users/logout
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUmFtc2VzIiwicGFzc3dvcmQiOiIkMmEkMTAkN2czN2pvZWNoRFA5ekZueW4vUDB0ZVIwdEpWdXpMMk5tNDUyVWtNMTIxVkRER3VBUHRHd1MiLCJpYXQiOjE1ODUxNDI0NTh9.hCjEXN2nX9gFw1H5UkHN6lOYGpPv8kVbmEBbhpQY2Yc"
 }

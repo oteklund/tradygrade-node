@@ -46,7 +46,7 @@ exports.getUser = async id => {
 exports.getUserByName = async name => {
   try {
     let response = await pool.query("SELECT * FROM users WHERE user_name=$1", [name])
-    if (!response.rows.length === 0) {
+    if (response.rows.length === 0) {
       return null
     }
     let user = new User(
