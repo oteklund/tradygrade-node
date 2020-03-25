@@ -1,4 +1,5 @@
 const io = require('socket.io')();
+const { chatUser } = require('./models/chatUsers')
 
 let connections = []
 let socketApi = {};
@@ -8,29 +9,29 @@ let socketApi = {};
 io.on('connection', socket => {
     console.log('Connected', socket.id)
 
-    socket.emit('join', ({user, chatID}) => {
-        socket.join(chatID)
-        console.log(`${user} joined chat ${chatID}`)
+    socket.on('joinChat', ( username, chatID ) => {
+        const user = chatUser(socket.id, username, chatID)
 
-        //User online
-        socket.broadcast.to(chatID).emit('user online', `${user} is online`)
-    
-        //Usert typing a message
-        socket.on('typing', (user) => {socket.broadcast.to(chatID).emit('typing', user)})
-    })
+        socket.join(user.chatID)
 
-    // socket.emit('join', 'Welcome user')
+        //Welcome user to chat
+        socket.emit('message', `Welcome ${user.username} to chat ${user.chatID}`)
 
+        //User typing a message...
+        socket.on('typing', (user) => { socket.broadcast.to(chatID).emit('typing', user) })
 
-    //Listening for chatMessage
-    socket.on('chatMessage', message => {
-        io.emit('new message', message)
-    })
+        //Listening for chatMessage
+        socket.on('chatMessage', message => {
+            // console.log(message.chat)
+            //Commit message to only this chatID
+            io.to(user.chatID).emit('new message', message)
+        })
 
-    //User going offline
-    socket.on('disconnect', () => {
-        io.emit('user disconnect', 'user is no longer online')
-        console.log("connection disconnected:", socket.id)
+        //User going offline
+        socket.on('disconnect', () => {
+            io.emit('user disconnect', `${user.username} is no longer online`)
+            console.log("connection disconnected:", socket.id)
+        })
     })
 
 });
