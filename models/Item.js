@@ -29,17 +29,6 @@ class Item {
       id: sellerId,
       name: seller
     };
-    // this.id = id;
-    // this.name = name;
-    // this.seller = seller;
-    // this.description = description;
-    // this.category = category;
-    // this.price = price;
-    // this.condition = condition;
-    // this.sold = sold;
-    // this.listedAt = listedAt;
-    // this.expires = expires;
-    // this.pictureURL = picture;
   }
 }
 
