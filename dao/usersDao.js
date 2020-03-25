@@ -1,5 +1,5 @@
 const pool = require('./poolConnection');
-const User = require('./models/User');
+const User = require('../models/User');
 
 exports.getUsers = async () => {
   try {
@@ -7,7 +7,7 @@ exports.getUsers = async () => {
     );
     let users = [];
     for (let row of response.rows) {
-      let user = new user(
+      let user = new User(
         row.user_id,
         row.user_name,
         row.user_password,
@@ -73,12 +73,12 @@ exports.updateUser = async (id, user) => {
    };
 };
 
-exports.createUser = async (newUser) => {
+exports.createUser = async (user) => {
   try {
     const { name,
       password,
       email,
-      picture } = newUser;
+      picture } = user;
 
     let response = await pool.query('INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4)',
       [name,
