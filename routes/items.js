@@ -12,7 +12,6 @@ router
   .route('/')
   .get(async (req, res, next) => {
     try {
-      console.log('suoritetaan');
       let items = await getItems();
       if (items) {
         res.json(items);
@@ -70,7 +69,6 @@ router
   .delete(async (req, res, next) => {
     try {
       let response = await deleteItem(req.params.id);
-      console.log(response);
       if (response) {
         res.status(200).json({ success: true });
       } else {
