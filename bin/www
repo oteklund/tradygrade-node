@@ -43,7 +43,7 @@ server.listen((process.env.SOCKET_IO_PORT), () => {
 /**
  * Socket.io
  */
-var socketApi = require('../chatSocket');
+var socketApi = require('../socket/chatSocket');
 var io = socketApi.io;
 io.attach(server);
 
