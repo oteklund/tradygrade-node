@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers, getUser, createUser } = require('../dao/usersDao');
+const { getUsers, getUser, createUser, getUserByName } = require('../dao/usersDao');
 const { getItemsByUserId } = require('../dao/itemsDao');
 const User = require("../models/User")
 const hashService = require("../auth/hashService")
+const jwtService = require("../auth/jwtService")
+const { authenticateToken } = require("./middleware")
 
 router
   .route('/')
@@ -19,7 +21,7 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const { name, email, picture} = req.body
+      const { name, email, picture } = req.body
       const hashedPassword = await hashService.hash(req.body.password)
       const user = new User(id = null, name, hashedPassword, email, picture) //initialize new user with id null (database generates id)
       await createUser(user)
@@ -28,6 +30,33 @@ router
       next(err);
     }
   });
+
+router
+  .route("/login")
+  .post(async (req, res, next) => {
+    try {
+      const { name, password } = req.body
+      const foundUser = await getUserByName(name)
+      
+      if (foundUser == null) {
+        res.status(400).send("Invalid credentials")
+        return
+      }
+      
+      const passwordIsCorrect = hashService.passwordCompare(password, foundUser.password)
+      if (passwordIsCorrect == null) throw "Error handling login, please try again later"
+      
+      if (passwordIsCorrect){
+        const newToken = jwtService.generateToken(foundUser)
+        res.status(200).json({...foundUser, token: newToken}) 
+      } else {
+        res.status(400).send("Invalid credentials") 
+      }
+    } catch (err) {
+      res.status(500).send()
+      next(err)
+    }
+  })
 
 router
   .route('/:id')
