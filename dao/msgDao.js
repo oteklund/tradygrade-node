@@ -66,27 +66,12 @@ exports.updateMsg = async (id, msg) => {
   }
 };
 
-// exports.createUser = async msg => {
-//   try {
-//     const { user, chat, timestamp, msgText } = msg;
-
-//     let response = await pool.query(
-//       'INSERT INTO users (msg_user_id, user_password, user_email, user_picture) VALUES($1,$2,$3,$4)',
-//       [name, password, email, picture]
-//     );
-//     return response.rows;
-//   } catch (err) {
-//     console.error(err.message);
-//     return null;
-//   }
-// };
-
-// exports.deleteUser = async id => {
-//   try {
-//     let response = await pool.query('DELETE FROM users WHERE user_id=$1', [id]);
-//     return response.rows;
-//   } catch (err) {
-//     console.error(err.message);
-//     return null;
-//   }
-// };
+exports.deleteMsg = async id => {
+  try {
+    let response = await pool.query('DELETE FROM msg WHERE msg_id=$1 RETURNING *', [id]);
+    return response.rows;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};
