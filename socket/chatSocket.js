@@ -1,5 +1,5 @@
 const io = require('socket.io')();
-const { chatUser } = require('../models/ChatUser')
+const { ChatUser } = require('../models/ChatUser')
 
 let connections = []
 let socketApi = {};
@@ -10,7 +10,7 @@ io.on('connection', socket => {
     console.log('Connected', socket.id)
 
     socket.on('joinChat', ( username, chatID ) => {
-        const user = chatUser(socket.id, username, chatID)
+        const user = ChatUser(socket.id, username, chatID)
 
         socket.join(user.chatID, () => {
             console.log(user.chatID)
