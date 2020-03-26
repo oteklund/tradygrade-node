@@ -94,8 +94,9 @@ exports.createUser = async newUser => {
 
 exports.deleteUser = async id => {
   try {
-    let response = await pool.query('DELETE FROM users WHERE user_id=$1', [id]);
-    return response.rows;
+    let response = await pool.query('DELETE FROM users WHERE user_id=$1 RETURNING *', [id])
+    if(response.rows.length === 0) return null
+    else return response.rows;
   } catch (err) {
     console.error(err.message);
     return null;
