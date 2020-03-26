@@ -1,5 +1,5 @@
 const io = require('socket.io')();
-const { chatUser } = require('../models/ChatUser')
+const { chatUser } = require('../models/chatUser')
 
 let connections = []
 let socketApi = {};

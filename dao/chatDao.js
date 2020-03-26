@@ -2,6 +2,7 @@ const pool = require('./poolConnection');
 const Message = require('../models/ChatMessage');
 const ChatId = require('../models/ChatId');
 
+// GET chatmessages by chatID
 exports.getChatMessages = async id => {
     try {
         let response = await pool.query(
@@ -26,6 +27,18 @@ exports.getChatMessages = async id => {
     }
 };
 
+// POST new chatmessage to chat
+exports.newChatMessage = async (userId, chatId, message) => {
+    try {
+        await pool.query('INSERT INTO msg( msg_user_id, msg_chat_id, msg_text) VALUES ($1, $2, $3)', [userId, chatId, message])
+        return 'Message sent to database'
+    } catch (err) {
+        console.error(err.message);
+        return null;
+    }
+}
+
+// GET chatIDs for specific user
 exports.getChatIDs = async (id) => {
     try {
         let response = await pool.query(
@@ -46,16 +59,8 @@ exports.getChatIDs = async (id) => {
     }
 }
 
-exports.newChatMessage = async (userId, chatId, message) => {
-    try {
-        await pool.query('INSERT INTO msg( msg_user_id, msg_chat_id, msg_text) VALUES ($1, $2, $3)', [userId, chatId, message])
-        return 'Message sent to database'
-    } catch (err) {
-        console.error(err.message);
-        return null;
-    }
-}
 
+// POST new chatID
 exports.addChatID = async () => {
     try {
         newId = await pool.query('INSERT INTO public.chat(chat_id) VALUES (nextval(\'chat_chat_id_seq\'::regclass)) RETURNING chat_id')
