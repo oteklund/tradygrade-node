@@ -10,7 +10,8 @@ user_id SERIAL PRIMARY KEY NOT NULL,
 user_name VARCHAR(50) NOT NULL,
 user_password VARCHAR(200) NOT NULL,
 user_email VARCHAR(99) NOT NULL,
-user_picture VARCHAR(240)
+user_picture VARCHAR(240),
+refresh_token TEXT
 );
 
 
