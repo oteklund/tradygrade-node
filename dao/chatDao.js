@@ -1,42 +1,5 @@
 const pool = require('./poolConnection');
-const Message = require('../models/ChatMessage');
 const ChatId = require('../models/ChatId');
-
-// GET chatmessages by chatID
-exports.getChatMessages = async id => {
-    try {
-        let response = await pool.query(
-            'SELECT chat_id, msg_id, msg_user_id, user_name, msg_text, msg_timestamp FROM msg, users, chat WHERE msg_user_id = user_id AND chat_id = $1', [id]
-        );
-        let chatID = response.rows[0].chat_id;
-        let messages = [];
-        for (let row of response.rows) {
-            let message = new Message(
-                row.msg_id,
-                row.msg_user_id,
-                row.user_name,
-                row.msg_text,
-                row.msg_timestamp
-            );
-            messages = [...messages, message];
-        }
-        return { chatID, messages };
-    } catch (err) {
-        console.error(err.message);
-        return null;
-    }
-};
-
-// POST new chatmessage to chat
-exports.newChatMessage = async (userId, chatId, message) => {
-    try {
-        await pool.query('INSERT INTO msg( msg_user_id, msg_chat_id, msg_text) VALUES ($1, $2, $3)', [userId, chatId, message])
-        return 'Message sent to database'
-    } catch (err) {
-        console.error(err.message);
-        return null;
-    }
-}
 
 // GET chatIDs for specific user
 exports.getChatIDs = async (id) => {
@@ -58,7 +21,7 @@ exports.getChatIDs = async (id) => {
         return null;
     }
 }
-
+ 
 
 // POST new chatID
 exports.addChatID = async () => {

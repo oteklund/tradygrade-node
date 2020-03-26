@@ -4,8 +4,6 @@ const { ChatUser } = require('../models/ChatUser')
 let connections = []
 let socketApi = {};
 
-
-
 io.on('connection', socket => {
     console.log('Connected', socket.id)
 
@@ -26,8 +24,7 @@ io.on('connection', socket => {
         socket.on('chatMessage', message => {
             
             //Commit message to only this chatID
-            // console.log(message.chat)
-            // console.log(user.chatID)
+            console.log(message)
             io.to(user.chatID).emit('new message', message)
         })
 

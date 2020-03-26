@@ -26,14 +26,13 @@ router
   .post(async (req, res, next) => {
     try {
       let response = await createItem(req.body);
-      console.log(response);
       if (response) {
         res.status(201).json({ success: true, id: response });
       } else {
-        res.status(400);
+        res.status(400).send();
       }
     } catch (err) {
-      res.status(500);
+      res.status(500).send();
       next(err);
     }
   });
@@ -59,10 +58,10 @@ router
       if (response) {
         res.status(200).json({ success: true });
       } else {
-        res.status(400);
+        res.status(400).json({ success: false });
       }
     } catch (err) {
-      res.status(500);
+      res.status(500).json({ success: false });
       next(err);
     }
   })
@@ -72,10 +71,10 @@ router
       if (response) {
         res.status(200).json({ success: true });
       } else {
-        res.status(400).json({ error: 'Id not found!' });
+        res.status(400).json({ success: false, error: 'Id not found!' });
       }
     } catch (err) {
-      res.status(500);
+      res.status(500).json({ success: false, error: 'Server error!' });
       next(err);
     }
   });
