@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS item(
     item_sold BOOLEAN DEFAULT FALSE,
     item_seller_id INT NOT NULL,
     item_category VARCHAR(99),
-    item_price FLOAT,
+    item_price FLOAT NOT NULL,
     item_listed_at DATE DEFAULT CURRENT_DATE NOT NULL,
     item_expires DATE,
     item_condition VARCHAR(50),

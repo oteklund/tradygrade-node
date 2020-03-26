@@ -73,7 +73,7 @@ exports.updateItem = async (id, item) => {
     } = item;
 
     let response = await pool.query(
-      'UPDATE item SET item_name=$1, item_description=$2, item_sold=$3, item_seller_id=$4, item_category=$5, item_price=$6, item_listed_at=$7, item_expires=$8, item_condition=$9, item_picture=$10 WHERE item_id=$11',
+      'UPDATE item SET item_name=$1, item_description=$2, item_sold=$3, item_seller_id=$4, item_category=$5, item_price=$6, item_listed_at=$7, item_expires=$8, item_condition=$9, item_picture=$10 WHERE item_id=$11 RETURNING *',
       [
         name,
         description,
@@ -88,7 +88,11 @@ exports.updateItem = async (id, item) => {
         id
       ]
     );
-    return response.rows;
+    if (response.rows.length === 0) {
+      return null;
+    } else {
+      return response.rows;
+    }
   } catch (err) {
     console.error(err.message);
     return null;
