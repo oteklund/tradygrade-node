@@ -2,7 +2,7 @@ const Pool = require('pg').Pool;
 require('dotenv').config();
 // Get Postgres entry information from dot dot dot dot .. rebooot : dot env
 
-const conopts = {
+let conopts = {
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   host: process.env.PG_HOST,

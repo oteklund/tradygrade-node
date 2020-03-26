@@ -26,7 +26,6 @@ router
   .post(async (req, res, next) => {
     try {
       let response = await createItem(req.body);
-      console.log(response);
       if (response) {
         res.status(201).json({ success: true, id: response });
       } else {
