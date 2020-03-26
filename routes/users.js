@@ -23,12 +23,13 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const { name, email, picture } = req.body;
-      const hashedPassword = await hashService.hash(req.body.password);
-      const user = new User((id = null), name, hashedPassword, email, picture); //initialize new user with id null (database generates id)
-      const data = await createUser(user);
-      if (data == null) res.status(400).json('That username is taken!');
-      res.status(201).json('Registration successful! You may now log in.');
+      const { name, email, picture, password } = req.body
+      if (!name || !email || !password) res.status(400).json({error: "Please fill out the required fields"})
+      const hashedPassword = await hashService.hash(req.body.password)
+      const user = new User(id = null, name, hashedPassword, email, picture) //initialize new user with id null (database generates id)
+      const data = await createUser(user)
+      if (data == null) res.status(400).json({error: "Username or email already in use, please try again."})
+      res.status(201).json("Registration successful! You may now log in.")
     } catch (err) {
       res
         .status(500)
