@@ -93,6 +93,26 @@ describe('Testing /api/marketplace/items route CRUD-requests', () => {
       expect(res.body.item.condition).toBe('Poor');
     });
   });
+
+  test('Delete with invalid ID should return statusCode 400', async () => {
+    await api.delete('/api/marketplace/items/253987523').then(res => {
+      expect(res.statusCode).toBe(400);
+      expect(res.body.success).toBe(false);
+    });
+  });
+
+  test('Delete with previously added id should return status 200', async () => {
+    await api.delete(`/api/marketplace/items/${dummyId}`).then(res => {
+      expect(res.statusCode).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+  });
+  test('GET ALL items response body length should be 0 now', async () => {
+    await api.get('/api/marketplace/items').then(res => {
+      expect(res.statusCode).toBe(200);
+      expect(res.body.length).toBe(0);
+    });
+  });
 });
 
 // Deleting all items from test database after every test run, so that testing is not dependent on your database state

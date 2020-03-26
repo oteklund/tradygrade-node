@@ -71,10 +71,10 @@ router
       if (response) {
         res.status(200).json({ success: true });
       } else {
-        res.status(400).json({ error: 'Id not found!' });
+        res.status(400).json({ success: false, error: 'Id not found!' });
       }
     } catch (err) {
-      res.status(500);
+      res.status(500).json({ success: false, error: 'Server error!' });
       next(err);
     }
   });
