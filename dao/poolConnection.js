@@ -10,6 +10,15 @@ const conopts = {
   // port: process.env.PG_PORT
 };
 
+if (process.env.NODE_ENV === 'test') {
+  conopts = {
+    user: process.env.TEST_PG_USER,
+    password: process.env.TEST_PG_PASSWORD,
+    host: process.env.TEST_PG_HOST,
+    database: process.env.TEST_PG_DB
+  };
+}
+
 const pool = new Pool(conopts);
 
 module.exports = pool;
