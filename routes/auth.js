@@ -23,7 +23,7 @@ router.post("/login", async (req, res, next) => {
       const passwordIsCorrect = hashService.passwordCompare(password, foundUser.password)
       if (passwordIsCorrect == null) throw "Error handling login, please try again later"
       
-      // in case authentication succeeds, we generate and return a jwt + refresh token. refresh tokens are currently stored locally in an array, but will be moved to a db.
+      // in case authentication succeeds, we generate and return a jwt access token + refresh token. refresh tokens are currently stored locally in an array, but will be moved to a db.
       if (passwordIsCorrect){
         const token = jwtService.generateToken(foundUser)
         const refreshToken = jwtService.refreshToken(foundUser)

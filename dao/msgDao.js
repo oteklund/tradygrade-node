@@ -65,11 +65,11 @@ exports.getMsg = async id => {
 
 exports.updateMsg = async (id, msg) => {
   try {
-    const { user, chat, timestamp, msgText } = msg;
+    const { msgText } = msg;
 
     let response = await pool.query(
-      'UPDATE msg SET msg_user_id=$1, msg_chat_id=$2, msg_timestamp=$3, msg_text=$4 WHERE msg_id=$5',
-      [user, chat, timestamp, msgText, id]
+      'UPDATE msg SET msg_text=$1 WHERE msg_id=$2',
+      [ msgText, id]
     );
     return response.rows;
   } catch (err) {
@@ -77,6 +77,40 @@ exports.updateMsg = async (id, msg) => {
     return null;
   }
 };
+
+exports.deleteMsg = async id => {
+  try {
+    let response = await pool.query('DELETE FROM msg WHERE msg_id=$1 RETURNING *', [id]);
+    return response.rows;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};
+
+// exports.getMsgs = async () => {
+//   try {
+//     let response = await pool.query('SELECT msg_id, msg_user_id,msg_chat_id, msg_timestamp, msg_text, user_name, user_email, user_picture FROM msg JOIN users ON msg_user_id = user_id');
+//     let msgs = [];
+//     for (let row of response.rows) {
+//       let msg = new Msg(
+//         row.msg_id,
+//         row.msg_user_id,
+//         row.msg_chat_id,
+//         row.msg_timestamp,
+//         row.msg_text,
+//         row.user_name,
+//         row.user_email,
+//         row.user_picture
+//       );
+//       msgs = [...msgs, msg];
+//     }
+//     return users;
+//   } catch (err) {
+//     console.error(err.message);
+//     return null;
+//   }
+// };
 
 // exports.createUser = async msg => {
 //   try {
@@ -103,26 +137,3 @@ exports.updateMsg = async (id, msg) => {
 //   }
 // };
 
-// exports.getMsgs = async () => {
-//   try {
-//     let response = await pool.query('SELECT msg_id, msg_user_id,msg_chat_id, msg_timestamp, msg_text, user_name, user_email, user_picture FROM msg JOIN users ON msg_user_id = user_id');
-//     let msgs = [];
-//     for (let row of response.rows) {
-//       let msg = new Msg(
-//         row.msg_id,
-//         row.msg_user_id,
-//         row.msg_chat_id,
-//         row.msg_timestamp,
-//         row.msg_text,
-//         row.user_name,
-//         row.user_email,
-//         row.user_picture
-//       );
-//       msgs = [...msgs, msg];
-//     }
-//     return users;
-//   } catch (err) {
-//     console.error(err.message);
-//     return null;
-//   }
-// };

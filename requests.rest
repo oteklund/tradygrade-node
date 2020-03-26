@@ -14,6 +14,10 @@ Content-Type: application/json
 
 ###
 
+DELETE http://localhost:4000/api/users/15
+
+###
+
 POST http://localhost:4000/api/auth/login
 Content-Type: application/json
 
@@ -28,7 +32,7 @@ POST http://localhost:4000/api/auth/token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9uYWxkIE1jRG9uYWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkdHdobjdWdjZ1THpsNTFPYTZkV1MydXg4SlhoT2RIbkJSSDJleXI2LnUwUktodDlQbkQ1REMiLCJpYXQiOjE1ODUxNDQxMzEsImV4cCI6MTU4NTE0NTkzMX0.UfoPyJYFqYucNxmL8FpHU-_VqpJrK0mlm9KMJuRC1Nc"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9uYWxkIE1jRG9uYWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkdHdobjdWdjZ1THpsNTFPYTZkV1MydXg4SlhoT2RIbkJSSDJleXI2LnUwUktodDlQbkQ1REMiLCJpYXQiOjE1ODUxNDgzMTR9.kteMbQLqh-RYo2KhWfhFd9w-3iB39B3VGZVh7sdm1K8"
 }
 
 ###
