@@ -14,6 +14,7 @@ user_picture VARCHAR(240),
 refresh_token TEXT
 );
 
+ALTER TABLE users ADD CONSTRAINT username_unique UNIQUE (user_name);
 
 CREATE TABLE IF NOT EXISTS chat(
     chat_id SERIAL PRIMARY KEY NOT NULL
