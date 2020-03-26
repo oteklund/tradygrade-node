@@ -65,8 +65,6 @@ describe('Testing /api/marketplace/items route CRUD-requests', () => {
     });
   });
 
-  // dummyData.condition = 'Poor';
-
   test('PUT should work with changed condition value', async () => {
     await api
       .put(`/api/marketplace/items/${dummyId}`)
