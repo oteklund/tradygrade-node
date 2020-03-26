@@ -32,6 +32,7 @@ msg_id SERIAL PRIMARY KEY NOT NULL,
 msg_user_id INT NOT NULL,
 msg_chat_id INT NOT NULL,
 msg_timestamp DATE DEFAULT CURRENT_DATE NOT NULL,
+msg_text text,
     FOREIGN KEY (msg_user_id) REFERENCES users(user_id),
     FOREIGN KEY (msg_chat_id) REFERENCES chat(chat_id)
     );
