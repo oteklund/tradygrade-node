@@ -125,7 +125,6 @@ exports.createItem = async item => {
       ]
     );
     const newId = response.rows[0].item_id;
-    console.log(newId);
     return newId;
   } catch (err) {
     console.error(err.message);
@@ -187,6 +186,18 @@ exports.getItemsByUserId = async userId => {
       }
     };
     return returnObject;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};
+
+// ONLY USED FOR CLEARING LOCAL DATABASE WITH JEST TESTS!
+
+exports.deleteAllItemsFromItemTable = async () => {
+  try {
+    await pool.query('DELETE from item RETURNING *');
+    return true;
   } catch (err) {
     console.error(err.message);
     return null;
