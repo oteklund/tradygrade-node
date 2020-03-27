@@ -2,25 +2,43 @@ const supertest = require('supertest');
 const app = require('../app');
 const pool = require('../dao/poolConnection');
 const { deleteAllItemsFromItemTable } = require('../dao/itemsDao');
+const { createUser } = require('../dao/usersDao');
 
 const api = supertest(app);
 
-let dummyData = {
-  name: 'Television',
-  sellerId: '1',
-  description: 'Perfect television for all your needs',
-  category: 'electronics',
-  condition: 'Perfect',
-  price: 100,
-  sold: false,
-  listedAt: '2020-03-02T22:00:00.000Z',
-  expires: '2020-04-02T21:00:00.000Z',
-  pictureURL: 'http://localhost:1235/'
+// Creating one user before tests to have a valid sellerId property
+
+let dummyUser = {
+  name: 'John Doe',
+  password: 'supersecretpasswordthatwouldbenormallyhashed',
+  email: 'johndoe@hotmail.com'
 };
 
-let dummyId;
-
 describe('Testing /api/marketplace/items route CRUD-requests', () => {
+  let dummySellerId;
+  test('Creating a user before item tests should work', async () => {
+    await api
+      .post('/api/users')
+      .send(dummyUser)
+      .then(res => {
+        expect(res.statusCode).toBe(201);
+        expect(res.body.id).toBeTruthy();
+        dummySellerId = res.body.id;
+      });
+  });
+  let dummyId;
+  let dummyData = {
+    name: 'Television',
+    sellerId: dummySellerId,
+    description: 'Perfect television for all your needs',
+    category: 'electronics',
+    condition: 'Perfect',
+    price: 100,
+    sold: false,
+    listedAt: '2020-03-02T22:00:00.000Z',
+    expires: '2020-04-02T21:00:00.000Z',
+    pictureURL: 'http://localhost:1235/'
+  };
   test('items should be returned as json', async () => {
     await api
       .get('/api/marketplace/items')
@@ -29,6 +47,7 @@ describe('Testing /api/marketplace/items route CRUD-requests', () => {
   });
 
   test('Creating a new item should work', async () => {
+    dummyData = { ...dummyData, sellerId: dummySellerId };
     await api
       .post('/api/marketplace/items')
       .send(dummyData)

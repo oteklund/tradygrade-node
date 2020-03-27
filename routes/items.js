@@ -16,10 +16,10 @@ router
       if (items) {
         res.json(items);
       } else {
-        res.status(400);
+        res.status(400).json({ success: false });
       }
     } catch (err) {
-      res.status(500);
+      res.status(500).json({ success: false });
       next(err);
     }
   })
@@ -29,10 +29,10 @@ router
       if (response) {
         res.status(201).json({ success: true, id: response });
       } else {
-        res.status(400).send();
+        res.status(400).json({ success: false });
       }
     } catch (err) {
-      res.status(500).send();
+      res.status(500).json({ success: false });
       next(err);
     }
   });

@@ -44,3 +44,15 @@ Content-Type: application/json
 {
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9uYWxkIE1jRG9uYWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkdHdobjdWdjZ1THpsNTFPYTZkV1MydXg4SlhoT2RIbkJSSDJleXI2LnUwUktodDlQbkQ1REMiLCJpYXQiOjE1ODUxNDQxMzEsImV4cCI6MTU4NTE0NTkzMX0.UfoPyJYFqYucNxmL8FpHU-_VqpJrK0mlm9KMJuRC1Nc"
 }
+
+###
+
+PUT http://localhost:4000/api/users/32
+Content-Type: application/json
+
+{
+    "name": "Tester McTestface",
+    "password": "test",
+    "email": "test@test.test",
+    "picture": "https://test.url"
+}
