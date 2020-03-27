@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { getChatMessages, getChatIDs, newChatMessage, addChatID } = require('../dao/chatDao');
-const { getMsg, updateMsg, deleteMsg} = require ('../dao/msgDao');
+
+const { getChatIDs, addChatID } = require('../dao/chatDao');
+const { getChatMessages, newChatMessage, getMsg, updateMsg, deleteMsg } = require('../dao/msgDao');
+
 
 // GET chatmessages by chatID
-router.route('/:chatid')
+router.route('/messages/:chatid')
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)
@@ -23,7 +25,7 @@ router.route('/:chatid')
   // POST new chatmessage to chat
   .post(async (req, res, next) => {
     try {
-      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message)
+      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message, req.body.timestamp)
       if (chats) {
         res.json(chats);
         res.status(200);
@@ -38,7 +40,7 @@ router.route('/:chatid')
 
 
 // GET chatIDs for specific user
-router.route('/chats/:userid')
+router.route('/my/:userid')
   .get(async (req, res, next) => {
     try {
       let chats = await getChatIDs(req.params.userid)
@@ -55,7 +57,7 @@ router.route('/chats/:userid')
   })
 
 // POST new chatID
-router.route('/chats/new')
+router.route('/new')
   .post(async (req, res, next) => {
     try {
       let newChat = await addChatID()

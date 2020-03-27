@@ -4,8 +4,6 @@ If you're having issues with this part, make sure you have the correct ACCESS_TO
 ================================
 */
 
-let refreshTokens = []
-
 const jwt = require("jsonwebtoken")
 
 const generateToken = user => {
@@ -57,8 +55,4 @@ const verifyRefreshToken = refreshToken => {
     return newToken
 }
 
-const deleteRefreshToken = refreshToken => {
-    refreshTokens = refreshTokens.filter(token => token !== refreshToken)
-}
-
-module.exports = { generateToken, verifyToken, verifyRefreshToken, refreshToken, refreshTokens, deleteRefreshToken }
+module.exports = { generateToken, verifyToken, verifyRefreshToken, refreshToken }

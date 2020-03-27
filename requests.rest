@@ -6,11 +6,15 @@ POST http://localhost:4000/api/users
 Content-Type: application/json
 
 {
-    "name": "Ronald McDonald",
-    "password": "burger",
-    "email": "ron@macca.brg",
-    "picture": "https://clown.url"
+    "name": "Tester McTestface",
+    "password": "test",
+    "email": "test@test.test",
+    "picture": "https://test.url"
 }
+
+###
+
+DELETE http://localhost:4000/api/users/31
 
 ###
 
@@ -18,8 +22,8 @@ POST http://localhost:4000/api/auth/login
 Content-Type: application/json
 
 {
-    "name": "Ronald McDonald",
-    "password": "burger"
+    "name": "Tester McTestface",
+    "password": "test"
 }
 
 ###
@@ -28,7 +32,8 @@ POST http://localhost:4000/api/auth/token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9uYWxkIE1jRG9uYWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkdHdobjdWdjZ1THpsNTFPYTZkV1MydXg4SlhoT2RIbkJSSDJleXI2LnUwUktodDlQbkQ1REMiLCJpYXQiOjE1ODUxNDQxMzEsImV4cCI6MTU4NTE0NTkzMX0.UfoPyJYFqYucNxmL8FpHU-_VqpJrK0mlm9KMJuRC1Nc"
+    "name": "Tester McTestface",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRZc1AydnJDbmZBVlI5MVIzUklrN2tlSGdVc0xZdlVkZUQ4bFo4T29yNy9ad1RYVjdPaGxrNiIsImlhdCI6MTU4NTI1NTkwM30.6ksd93u-XUbmUaZJfSCYX2c-RdUASGl0S1hVfzxSHhs"
 }
 
 ###
