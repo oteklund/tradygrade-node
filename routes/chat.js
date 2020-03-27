@@ -8,7 +8,6 @@ router.route('/messages/:chatid')
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)
-      console.log(messages)
       if (messages) {
         res.json(messages);
         res.status(200);
@@ -24,7 +23,7 @@ router.route('/messages/:chatid')
   // POST new chatmessage to chat
   .post(async (req, res, next) => {
     try {
-      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message, req.body.timestamp)
+      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message, req.body.time)
       if (chats) {
         res.json(chats);
         res.status(200);
