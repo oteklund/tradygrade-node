@@ -24,7 +24,7 @@ exports.deleteRefreshToken = async (name) => {
     }
 }
 
-exports.retrieveRefreshTokenFromDatabase = async (name, refreshToken) => {
+exports.retrieveRefreshTokenFromDatabase = async (name) => {
     try {
         const response = await pool.query("SELECT refresh_token FROM users WHERE user_name=$1", [name])
         if (!response.rows) return null
