@@ -2,6 +2,7 @@ const pool = require('./poolConnection');
 const Message = require('../models/ChatMessage');
 const Msg = require('../models/Msg');
 
+
 // GET chatmessages by chatID
 exports.getChatMessages = async id => {
   try {
@@ -40,9 +41,10 @@ exports.newChatMessage = async (userId, chatId, message, time) => {
 }
 
 
+
 exports.getMsg = async id => {
   try {
-    let response = await pool.query('SELECT msg_id, msg_user_id,msg_chat_id, msg_timestamp, msg_text, user_name, user_email, user_picture FROM msg JOIN users ON msg_user_id = user_id WHERE msg_id=$1;', [
+    let response = await pool.query('SELECT msg_id, msg_user_id, msg_chat_id, msg_timestamp, msg_text, user_name, user_email, user_picture FROM msg JOIN users ON msg_user_id = user_id WHERE msg_id=$1;', [
       id
     ]);
     'SELECT chat_id, msg_id, msg_user_id, user_name, msg_text, msg_timestamp FROM msg, users, chat WHERE msg_user_id = user_id AND chat_id = $1', [id]
@@ -51,7 +53,7 @@ exports.getMsg = async id => {
       response.rows[0].msg_user_id,
       response.rows[0].msg_chat_id,
       response.rows[0].msg_timestamp,
-      response.rows[0].msg_text.
+      response.rows[0].msg_text,
       response.rows[0].user_name,
       response.rows[0].user_email,
       response.rows[0].user_picture
