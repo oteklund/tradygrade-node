@@ -43,9 +43,11 @@ exports.getUser = async id => {
 
 exports.getUserByName = async name => {
   try {
-    let response = await pool.query("SELECT * FROM users WHERE user_name=$1", [name])
+    let response = await pool.query('SELECT * FROM users WHERE user_name=$1', [
+      name
+    ]);
     if (response.rows.length === 0) {
-      return null
+      return null;
     }
     let user = new User(
       response.rows[0].user_id,
@@ -53,13 +55,13 @@ exports.getUserByName = async name => {
       response.rows[0].user_password,
       response.rows[0].user_email,
       response.rows[0].user_picture
-    )
-    return user
+    );
+    return user;
   } catch (err) {
     console.error(err.message);
     return null;
   }
-}
+};
 
 exports.updateUser = async (id, user) => {
   try {
@@ -73,7 +75,6 @@ exports.updateUser = async (id, user) => {
   } catch (err) {
     console.error(err.message);
     return null;
-
   }
 };
 
@@ -82,10 +83,14 @@ exports.createUser = async newUser => {
     const { name, password, email, picture } = newUser;
 
     let response = await pool.query(
-      'INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4)',
+      'INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4) RETURNING user_id',
       [name, password, email, picture]
     );
-    return response.rows;
+    if (response.rows.length > 0) {
+      return response.rows[0].user_id;
+    } else {
+      return null;
+    }
   } catch (err) {
     console.error(err.message);
     return null;
@@ -94,9 +99,24 @@ exports.createUser = async newUser => {
 
 exports.deleteUser = async id => {
   try {
-    let response = await pool.query('DELETE FROM users WHERE user_id=$1 RETURNING *', [id])
-    if(response.rows.length === 0) return null
+    let response = await pool.query(
+      'DELETE FROM users WHERE user_id=$1 RETURNING *',
+      [id]
+    );
+    if (response.rows.length === 0) return null;
     else return response.rows;
+  } catch (err) {
+    console.error(err.message);
+    return null;
+  }
+};
+
+//ONLY FOR TESTING WITH LOCAL DB!
+
+exports.deleteAllUsersFromDB = async () => {
+  try {
+    await pool.query('DELETE FROM users RETURNING *');
+    return true;
   } catch (err) {
     console.error(err.message);
     return null;
