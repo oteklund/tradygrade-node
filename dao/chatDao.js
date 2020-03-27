@@ -24,10 +24,23 @@ exports.getChatIDs = async (id) => {
  
 
 // POST new chatID
-exports.addChatID = async () => {
+exports.addChatID = async (user1, user2) => {
     try {
         newId = await pool.query('INSERT INTO public.chat(chat_id) VALUES (nextval(\'chat_chat_id_seq\'::regclass)) RETURNING chat_id')
-        return `Chat id ${newId.rows[0].chat_id} cheated`
+        await pool.query('INSERT INTO chatter(chatter_user_id, chatter_chat_id) VALUES ($1, $3), ($2, $3)', [user1, user2, newId.rows[0].chat_id])
+        return `User ${user1} and ${user2} added to chat ${newId.rows[0].chat_id}`
+    } catch (err) {
+        console.error(err.message);
+        return null;
+    }
+}
+
+// ADD new user as a chatter to a chat
+exports.addChatter = async (chat, user) => {
+    try {
+        chatter = await pool.query('INSERT INTO chatter(chatter_user_id, chatter_chat_id) VALUES ($1, $2) RETURNING *', [user, chat])
+        console.log(chatter.rows)
+        return `User ${chatter.rows[0].chatter_user_id} added to chat ${chatter.rows[0].chatter_chat_id}`
     } catch (err) {
         console.error(err.message);
         return null;
