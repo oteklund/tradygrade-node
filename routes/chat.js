@@ -8,6 +8,7 @@ router.route('/messages/:chatid')
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)
+      console.log(messages)
       if (messages) {
         res.json(messages);
         res.status(200);
