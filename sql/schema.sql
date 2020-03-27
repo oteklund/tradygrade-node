@@ -15,6 +15,7 @@ refresh_token TEXT
 );
 
 ALTER TABLE users ADD CONSTRAINT username_unique UNIQUE (user_name);
+ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (user_email);
 
 CREATE TABLE IF NOT EXISTS chat(
     chat_id SERIAL PRIMARY KEY NOT NULL
