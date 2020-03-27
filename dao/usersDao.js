@@ -27,6 +27,11 @@ exports.getUser = async id => {
     let response = await pool.query('SELECT * FROM users WHERE user_id=$1', [
       id
     ]);
+
+    if (response.rows.length === 0) {
+      return null;
+    }
+
     let user = new User(
       response.rows[0].user_id,
       response.rows[0].user_name,
@@ -68,10 +73,14 @@ exports.updateUser = async (id, user) => {
     const { name, password, email, picture } = user;
 
     let response = await pool.query(
-      'UPDATE users SET user_name=$1, user_password=$2, user_email=$3, user_picture=$4 WHERE user_id=$5',
+      'UPDATE users SET user_name=$1, user_password=$2, user_email=$3, user_picture=$4 WHERE user_id=$5 RETURNING user_id',
       [name, password, email, picture, id]
     );
-    return response.rows;
+    if (response.rows.length === 0) {
+      return null;
+    } else {
+      return response.rows;
+    }
   } catch (err) {
     console.error(err.message);
     return null;

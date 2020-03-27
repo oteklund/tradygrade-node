@@ -65,22 +65,31 @@ router
   .route('/:id')
   .get(async (req, res, next) => {
     try {
-      console.log('Looking for the one!');
       let userData = await getUser(req.params.id);
-      console.log(userData);
-      res.json(userData);
+      if (userData) {
+        res.status(200).json(userData);
+      } else {
+        res.status(400).json({ success: false });
+      }
     } catch (err) {
+      res.status(500).json({ success: false });
       next(err);
     }
   })
   .put(async (req, res, next) => {
     try {
-      const hashedPassword = await hashService.hash(req.body.password)
-      req.body.password = hashedPassword
-      const response = await updateUser(req.params.id, req.body)
-      if (response) res.status(204).send("User successfully updated.")
-      else res.status(400).send()
+      const hashedPassword = await hashService.hash(req.body.password);
+      req.body.password = hashedPassword;
+      const response = await updateUser(req.params.id, req.body);
+      if (response) {
+        res
+          .status(204)
+          .json({ success: true, msg: 'User successfully updated.' });
+      } else {
+        res.status(400).json({ success: false });
+      }
     } catch (err) {
+      res.status(500).json({ success: false, msg: 'Server error' });
       next(err);
     }
   })
@@ -88,11 +97,14 @@ router
     try {
       const id = req.params.id;
       let data = await deleteUser(id);
-      if (!data) res.status(404).send('No such user');
-      else res.status(204).send('User successfully deleted.');
+      if (!data) res.status(400).json({ success: false, msg: 'No such user' });
+      else
+        res
+          .status(200)
+          .json({ success: true, msg: 'User successfully deleted.' });
     } catch (err) {
       next(err);
-      res.status(500).send();
+      res.status(500).json({ success: false });
     }
   });
 
@@ -104,10 +116,10 @@ router.get('/:id/items', async (req, res) => {
     if (response) {
       res.status(200).json(response);
     } else {
-      res.status(400).json({ error: 'No data found' });
+      res.status(400).json({ success: false, error: 'No data found' });
     }
   } catch (err) {
-    res.status(500);
+    res.status(500).json({ success: false, error: 'Server error' });
     next(err);
   }
 });
