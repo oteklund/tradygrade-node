@@ -25,10 +25,6 @@ const Msg = require('../models/Msg');
 //   }
 // };
 
-
-
-
-
 exports.getMsg = async id => {
   try {
     let response = await pool.query('SELECT msg_id, msg_user_id, msg_chat_id, msg_timestamp, msg_text, user_name, user_email, user_picture FROM msg JOIN users ON msg_user_id = user_id WHERE msg_id=$1;', [
