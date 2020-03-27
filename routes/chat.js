@@ -4,7 +4,7 @@ const { getChatIDs, addChatID } = require('../dao/chatDao');
 const { getChatMessages, newChatMessage } = require('../dao/msgDao');
 
 // GET chatmessages by chatID
-router.route('/message/:chatid')
+router.route('/messages/:chatid')
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)

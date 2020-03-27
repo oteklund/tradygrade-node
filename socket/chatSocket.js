@@ -24,7 +24,6 @@ io.on('connection', socket => {
         socket.on('chatMessage', message => {
             
             //Commit message to only this chatID
-            console.log(message)
             io.to(user.chatID).emit('new message', message)
         })
 
