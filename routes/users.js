@@ -4,7 +4,8 @@ const {
   getUsers,
   getUser,
   createUser,
-  deleteUser
+  deleteUser,
+  updateUser
 } = require('../dao/usersDao');
 const { getItemsByUserId } = require('../dao/itemsDao');
 const User = require('../models/User');
@@ -74,6 +75,11 @@ router
   })
   .put(async (req, res, next) => {
     try {
+      const hashedPassword = await hashService.hash(req.body.password)
+      req.body.password = hashedPassword
+      const response = await updateUser(req.params.id, req.body)
+      if (response) res.status(204).send("User successfully updated.")
+      else res.status(400).send()
     } catch (err) {
       next(err);
     }

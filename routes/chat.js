@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+
 const { getChatIDs, addChatID } = require('../dao/chatDao');
-const { getChatMessages, newChatMessage } = require('../dao/msgDao');
+const { getChatMessages, newChatMessage, getMsg, updateMsg, deleteMsg } = require('../dao/msgDao');
+
 
 // GET chatmessages by chatID
-router.route('/message/:chatid')
+router.route('/messages/:chatid')
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)
@@ -23,7 +25,7 @@ router.route('/message/:chatid')
   // POST new chatmessage to chat
   .post(async (req, res, next) => {
     try {
-      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message, req.body.timestamp)
+      let chats = await newChatMessage(req.body.user, req.params.chatid, req.body.message, req.body.time)
       if (chats) {
         res.json(chats);
         res.status(200);
@@ -69,7 +71,48 @@ router.route('/new')
       res.status(500);
       next(err);
     }
-  })
+  });
 
+router.route('/message/:id')
+  .get(async (req, res, next) => {
+    try {
+      let msg = await getMsg(req.params.id)
+      if (msg) {
+        res.json(msg);
+        res.status(200);
+      } else {
+        res.status(400).json({ msg: 'Invalid message id' });
+      }
+    } catch (err) {
+      res.status(500);
+      next(err);
+    }
+  })
+  .put(async (req, res, next) => {
+    try {
+      let response = await updateMsg(req.params.id, req.body);
+      if (response) {
+        res.status(200).json({ success: true });
+      } else {
+        res.status(400);
+      }
+    } catch (err) {
+      res.status(500);
+      next(err);
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      let response = await deleteMsg(req.params.id);
+      if (response) {
+        res.status(200).json({ success: true });
+      } else {
+        res.status(400).json({ error: 'Id not found!' });
+      }
+    } catch (err) {
+      res.status(500);
+      next(err);
+    }
+  });
 
 module.exports = router;
