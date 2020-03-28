@@ -22,6 +22,17 @@ exports.getChatIDs = async (id) => {
     }
 }
  
+exports.getChatID = async (user1, user2) => {
+    try {
+        let response = await pool.query(
+            'SELECT chat.chat_id FROM chat, (SELECT chat_id FROM chat, chatter WHERE chat_id = chatter_chat_id AND chatter_user_id = $1) as user1, (SELECT chat_id FROM chat, chatter WHERE chat_id = chatter_chat_id AND chatter_user_id = $2) as user2 WHERE chat.chat_id = user2.chat_id AND user2.chat_id = user1.chat_id', [user1, user2]
+        );
+        return response.rows;
+    } catch (err) {
+        console.error(err.message);
+        return null;
+    }
+}
 
 // POST new chatID
 exports.addChatID = async (user1, user2) => {
