@@ -10,11 +10,11 @@ const {
 const { getItemsByUserId } = require('../dao/itemsDao');
 const User = require('../models/User');
 const hashService = require('../auth/hashService');
-const { authenticateToken } = require('./middleware');
+const { authenticateToken } = require('../middleware/middleware'); //apply to all routes that require the user to be logged in 
 
 router
   .route('/')
-  .get(async (req, res, next) => {
+  .get(authenticateToken, async (req, res, next) => {
     try {
       let usersData = await getUsers();
       if (usersData) {
@@ -27,6 +27,7 @@ router
       next(err);
     }
   })
+  //registration route:
   .post(async (req, res, next) => {
     try {
       const { name, email, picture, password } = req.body;
@@ -63,7 +64,7 @@ router
 
 router
   .route('/:id')
-  .get(async (req, res, next) => {
+  .get(authenticateToken, async (req, res, next) => {
     try {
       let userData = await getUser(req.params.id);
       if (userData) {
@@ -76,7 +77,7 @@ router
       next(err);
     }
   })
-  .put(async (req, res, next) => {
+  .put(authenticateToken, async (req, res, next) => {
     try {
       const hashedPassword = await hashService.hash(req.body.password);
       req.body.password = hashedPassword;
@@ -93,7 +94,7 @@ router
       next(err);
     }
   })
-  .delete(async (req, res, next) => {
+  .delete(authenticateToken, async (req, res, next) => {
     try {
       const id = req.params.id;
       let data = await deleteUser(id);
@@ -110,7 +111,7 @@ router
 
 //GET all items user has listed on the marketplace - Pekka
 
-router.get('/:id/items', async (req, res) => {
+router.get('/:id/items', authenticateToken, async (req, res) => {
   try {
     let response = await getItemsByUserId(req.params.id);
     if (response) {

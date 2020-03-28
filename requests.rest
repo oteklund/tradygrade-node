@@ -1,5 +1,5 @@
 GET http://localhost:4000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUm9uYWxkIE1jRG9uYWxkIiwicGFzc3dvcmQiOiIkMmEkMTAkdHdobjdWdjZ1THpsNTFPYTZkV1MydXg4SlhoT2RIbkJSSDJleXI2LnUwUktodDlQbkQ1REMiLCJpYXQiOjE1ODUxNDQwODksImV4cCI6MTU4NTE0NTg4OX0.jojK4rrurxvZgjSJFWDK8-17IoDcyTtprAUvjUn3FiU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRBMkRzNUtrTW1qV3dWRkpIbHE0RUZ1WWR5Wi5EaW9kN0hLRE5xbGlUVHVmbDBGQ0t2b2dOeSIsImlhdCI6MTU4NTMyNjMxNSwiZXhwIjoxNTg1MzgwMzE1fQ.3PhDnWXwGle9sgQ99pq1cwyxGIAh7X56HFJB1Sogey0
 ###
 
 POST http://localhost:4000/api/users
@@ -32,8 +32,7 @@ POST http://localhost:4000/api/auth/token
 Content-Type: application/json
 
 {
-    "name": "Tester McTestface",
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRZc1AydnJDbmZBVlI5MVIzUklrN2tlSGdVc0xZdlVkZUQ4bFo4T29yNy9ad1RYVjdPaGxrNiIsImlhdCI6MTU4NTI1NTkwM30.6ksd93u-XUbmUaZJfSCYX2c-RdUASGl0S1hVfzxSHhs"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoib3R0byIsInBhc3N3b3JkIjoiJDJhJDEwJDNPcXlZVkdJenBMaXNiaVlmSmdScXVzVnBpUTNOWVZKWndqNS9CRTlUTHU1bjlmM0pXZ0FTIiwiaWF0IjoxNTg1MzI5NzYzLCJleHAiOjE1ODc5MjE3NjN9.0qp2YGEni0MQ_JeJ3EhOA_twzLwiRus8YUEV2ThvHrU"
 }
 
 ###
