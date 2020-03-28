@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getChatIDs, addChatID, addChatter } = require('../dao/chatDao');
+const { getChatIDs, getChatID, addChatID, addChatter } = require('../dao/chatDao');
 const { getChatMessages, newChatMessage, getMsg, updateMsg, deleteMsg } = require('../dao/msgDao');
 
 
@@ -55,6 +55,23 @@ router.route('/my/:userid')
       next(err);
     }
   })
+
+// GET chatID for two users
+router.route('/our/:userid1/:userid2')
+.get(async (req, res, next) => {
+  try {
+    let chat = await getChatID(req.params.userid1, req.params.userid2)
+    if (chat) {
+      res.json(chat);
+      res.status(200);
+    } else {
+      res.status(400);
+    }
+  } catch (err) {
+    res.status(500);
+    next(err);
+  }
+})
 
 // POST new chatID and add relations for two users to that chat id
 router.route('/new')
