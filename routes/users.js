@@ -14,7 +14,8 @@ const { authenticateToken } = require('../middleware/middleware'); //apply to al
 
 router
   .route('/')
-  .get(authenticateToken, async (req, res, next) => {
+  // .get(authenticateToken, async (req, res, next) => {
+    .get(async (req, res, next) => {
     try {
       let usersData = await getUsers();
       if (usersData) {

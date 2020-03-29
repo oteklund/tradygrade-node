@@ -1,7 +1,6 @@
 const io = require('socket.io')();
 const { ChatUser } = require('../models/ChatUser')
 
-let connections = []
 let socketApi = {};
 
 io.on('connection', socket => {
@@ -11,7 +10,8 @@ io.on('connection', socket => {
         const user = ChatUser(socket.id, username, chatID)
 
         socket.join(user.chatID, () => {
-            console.log(user.chatID)
+            // socket.broadcast.to(chatID).emit('user online', `${user.username} is online`)
+            console.log(`You have joined chat ${user.chatID}`)
         }) 
 
         //Welcome user to chat
@@ -22,9 +22,10 @@ io.on('connection', socket => {
 
         //Listening for chatMessage
         socket.on('chatMessage', message => {
+            console.log(message)
             
             //Commit message to only this chatID
-            io.to(user.chatID).emit('new message', message)
+            io.to(socket.id).emit('new message', message)
         })
 
         //User going offline

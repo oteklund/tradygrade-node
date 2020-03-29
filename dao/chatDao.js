@@ -4,24 +4,27 @@ const ChatId = require('../models/ChatId');
 // GET chatIDs for specific user
 exports.getChatIDs = async (id) => {
     try {
+        let people = [];
         let response = await pool.query(
             'SELECT user_id, chatter_chat_id FROM chatter, users WHERE chatter_user_id = user_id AND user_id = $1', [id]
         );
-        let userid = response.rows[0].user_id
-        let chats = [];
-        for (let row of response.rows) {
-            let chatid = new ChatId(
-                row.chatter_chat_id
+        for (let chatid of response.rows) {
+            let response = await pool.query(
+                'SELECT user_name, user_picture FROM users, chatter WHERE user_id = chatter_user_id AND chatter_chat_id = $1 AND user_id != $2', [chatid.chatter_chat_id, id]
             );
-            chats = [...chats, chatid];
+            for (onePerson of response.rows) {
+                let person = { chatid: chatid.chatter_chat_id, name: onePerson.user_name, picture: onePerson.user_picture}
+                console.log(person)
+                people.push(person)
+            }
         }
-        return {userid: userid, chats};
+        return people
     } catch (err) {
         console.error(err.message);
         return null;
     }
 }
- 
+
 exports.getChatID = async (user1, user2) => {
     try {
         let response = await pool.query(
