@@ -13,7 +13,7 @@ const generateToken = user => {
             password: user.password
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "30m" }
+        { expiresIn: "15m" }
     )
     return token
 }
@@ -24,7 +24,8 @@ const refreshToken = user => {
             name: user.name,
             password: user.password
         },
-        process.env.REFRESH_TOKEN_SECRET
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: "30d" }
         )
 }
 
@@ -40,7 +41,7 @@ const verifyToken = token => {
     return verifiedUser
 }
 
-const verifyRefreshToken = refreshToken => {
+const verifyRefreshTokenAndReturnNewToken = refreshToken => {
     const newToken = jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
@@ -55,4 +56,4 @@ const verifyRefreshToken = refreshToken => {
     return newToken
 }
 
-module.exports = { generateToken, verifyToken, verifyRefreshToken, refreshToken }
+module.exports = { generateToken, verifyToken, verifyRefreshTokenAndReturnNewToken, refreshToken }
