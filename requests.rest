@@ -1,5 +1,5 @@
 GET http://localhost:4000/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRBMkRzNUtrTW1qV3dWRkpIbHE0RUZ1WWR5Wi5EaW9kN0hLRE5xbGlUVHVmbDBGQ0t2b2dOeSIsImlhdCI6MTU4NTMyNjMxNSwiZXhwIjoxNTg1MzgwMzE1fQ.3PhDnWXwGle9sgQ99pq1cwyxGIAh7X56HFJB1Sogey0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRBMkRzNUtrTW1qV3dWRkpIbHE0RUZ1WWR5Wi5EaW9kN0hLRE5xbGlUVHVmbDBGQ0t2b2dOeSIsImlhdCI6MTU4NTM4Nzc0MCwiZXhwIjoxNTg1Mzg4NjQwfQ.MexoQ4iMsKHeL40XObgiHE4xH-JGVZAYkA7MUgBXNvU
 ###
 
 POST http://localhost:4000/api/users
@@ -14,7 +14,8 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:4000/api/users/31
+DELETE http://localhost:4000/api/users/38
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiVGVzdGVyIE1jVGVzdGZhY2UiLCJwYXNzd29yZCI6IiQyYSQxMCRBMkRzNUtrTW1qV3dWRkpIbHE0RUZ1WWR5Wi5EaW9kN0hLRE5xbGlUVHVmbDBGQ0t2b2dOeSIsImlhdCI6MTU4NTM4NzgxMCwiZXhwIjoxNTg1Mzg4NzEwfQ.5ss4479waq-M2x3TXVxLCjfsoIpNYACf6sBCiZmqzy0
 
 ###
 
