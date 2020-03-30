@@ -90,6 +90,16 @@ exports.deleteMsg = async id => {
   }
 };
 
+exports.deleteAllMsgsFromItemTable = async () => {
+    try {
+      await pool.query('DELETE from msg RETURNING *');
+      return true;
+    } catch (err) {
+      console.error(err.message);
+      return null;
+    }
+  };
+
 
 // exports.createUser = async msg => {
 //   try {
