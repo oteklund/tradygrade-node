@@ -7,10 +7,13 @@ const hash = async data => {
 }
 
 const dataCompare = async (data, hashedData) => {
-    bcrypt.compare(data, hashedData, (err, result) => {
-        if (err) return null
-        return result
-    })
+    try {
+        let result = bcrypt.compare(data, hashedData)
+        if (result) return result 
+    } catch (error) {
+        return error        
+    }
+
 }
 
 module.exports = { hash, dataCompare }
