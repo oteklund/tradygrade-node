@@ -7,6 +7,7 @@ const express = require('express');
 const router = express.Router();
 const hashService = require("../auth/hashService")
 const jwtService = require("../auth/jwtService")
+const bcrypt = require("bcryptjs")
 const { authenticateToken } = require("../middleware/middleware")
 const { getUserByName } = require("../dao/usersDao")
 const { saveRefreshToken, retrieveRefreshTokenFromDatabase, deleteRefreshToken } = require("../dao/jwtDao")
@@ -29,12 +30,11 @@ router.post("/login", async (req, res, next) => {
     const foundUser = await getUserByName(name)
 
     if (foundUser == null) {
-      res.status(400).json({ message: "Invalid credentials" })
+      res.status(400).json({ error: "Invalid credentials" })
       return
     }
-
-    const passwordIsCorrect = hashService.dataCompare(password, foundUser.password)
-    if (passwordIsCorrect == null) throw "Error handling login, please try again later"
+    
+    const passwordIsCorrect = await hashService.dataCompare(password, foundUser.password)
 
     // in case authentication succeeds, we generate and return a jwt access token + refresh token. 
     if (passwordIsCorrect) {
@@ -43,7 +43,7 @@ router.post("/login", async (req, res, next) => {
       saveRefreshToken(foundUser.id, refreshToken) // <- move to db
       res.status(200).json({ ...foundUser, token: token, refreshToken: refreshToken })
     } else {
-      res.status(400).json({ message: "Invalid credentials" })
+      res.status(400).json({ error: "Invalid credentials" })
     }
   } catch (err) {
     res.status(500).send()
@@ -54,7 +54,7 @@ router.post("/login", async (req, res, next) => {
 router.delete("/logout", (req, res, next) => {
   //remove refresh token from db on logout
   deleteRefreshToken(req.body.name)
-  res.status(204).json({ message: "Logout successful" })
+  res.status(204).json({ error: "Logout successful" })
 })
 
 router.post("/token", async (req, res, next) => {
@@ -68,7 +68,7 @@ router.post("/token", async (req, res, next) => {
     //retrieve user name by decoding refresh token, then generate new refresh token
     const newToken = jwtService.verifyRefreshTokenAndReturnNewToken(refreshToken)
     const tokenUser = jwtService.verifyToken(newToken)
-    if (newToken == null) res.status(403).json({ message: "Permission denied" })
+    if (newToken == null) res.status(403).json({ error: "Permission denied" })
 
     //retrieve refresh token from db and make sure response isn't empty
     const storedRefreshToken = await retrieveRefreshTokenFromDatabase(tokenUser.name)
@@ -76,7 +76,7 @@ router.post("/token", async (req, res, next) => {
 
     //check that submitted refresh token matches with db stored one
     const refreshTokenIsValid = hashService.dataCompare(refreshToken, storedRefreshToken)
-    if (!refreshTokenIsValid) res.status(403).json({ message: "Permission denied" })
+    if (!refreshTokenIsValid) res.status(403).json({ error: "Permission denied" })
 
     let user = await getUserByName(tokenUser.name)
     user = { ...user, token: newToken, refreshToken: refreshToken }
