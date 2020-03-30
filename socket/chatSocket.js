@@ -6,7 +6,7 @@ let socketApi = {};
 io.on('connection', socket => {
     console.log('Connected', socket.id)
 
-    socket.on('joinChat', ( username, chatID ) => {
+    socket.on('joinChat', (username, chatID ) => {
         const user = ChatUser(socket.id, username, chatID)
 
         socket.join(user.chatID, () => {
@@ -25,7 +25,7 @@ io.on('connection', socket => {
             console.log(message)
             
             //Commit message to only this chatID
-            io.to(socket.id).emit('new message', message)
+            io.to(message.chat).emit('new message', message)
         })
 
         //User going offline
