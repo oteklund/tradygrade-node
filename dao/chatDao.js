@@ -39,10 +39,11 @@ exports.getChatID = async (user1, user2) => {
 
 // POST new chatID
 exports.addChatID = async (user1, user2) => {
+    console.log(user1, user2)
     try {
         newId = await pool.query('INSERT INTO public.chat(chat_id) VALUES (nextval(\'chat_chat_id_seq\'::regclass)) RETURNING chat_id')
         await pool.query('INSERT INTO chatter(chatter_user_id, chatter_chat_id) VALUES ($1, $3), ($2, $3)', [user1, user2, newId.rows[0].chat_id])
-        return `User ${user1} and ${user2} added to chat ${newId.rows[0].chat_id}`
+        return newId.rows[0].chat_id
     } catch (err) {
         console.error(err.message);
         return null;

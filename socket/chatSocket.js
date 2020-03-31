@@ -18,14 +18,16 @@ io.on('connection', socket => {
         socket.emit('message', `Welcome to chat nro.${user.chatID} ${user.username}!`)
 
         //User typing a message...
-        socket.on('typing', (user) => { socket.broadcast.to(chatID).emit('typing', user) })
+        socket.on('typing', (username, cID) => { 
+            socket.broadcast.to(cID).emit('typing', username) 
+        })
 
         //Listening for chatMessage
         socket.on('chatMessage', message => {
             console.log(message)
             
             //Commit message to only this chatID
-            io.to(message.chat).emit('new message', message)
+            io.to(user.chatID).emit('new message', message)
         })
 
         //User going offline
