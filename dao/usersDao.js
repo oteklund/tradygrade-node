@@ -9,6 +9,7 @@ exports.getUsers = async () => {
       let user = new User(
         row.user_id,
         row.user_name,
+        row.user_password,
         row.user_email,
         row.user_picture
       );
