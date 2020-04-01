@@ -14,7 +14,6 @@ exports.getChatIDs = async (id) => {
             );
             for (onePerson of response.rows) {
                 let person = { chatid: chatid.chatter_chat_id, name: onePerson.user_name, picture: onePerson.user_picture}
-                console.log(person)
                 people.push(person)
             }
         }
@@ -39,11 +38,11 @@ exports.getChatID = async (user1, user2) => {
 
 // POST new chatID
 exports.addChatID = async (user1, user2) => {
-    console.log(user1, user2)
     try {
         newId = await pool.query('INSERT INTO public.chat(chat_id) VALUES (nextval(\'chat_chat_id_seq\'::regclass)) RETURNING chat_id')
         await pool.query('INSERT INTO chatter(chatter_user_id, chatter_chat_id) VALUES ($1, $3), ($2, $3)', [user1, user2, newId.rows[0].chat_id])
-        return newId.rows[0].chat_id
+        user2name = await pool.query('SELECT user_name FROM users WHERE user_id = $1', [user2])
+        return ({id: newId.rows[0].chat_id, name: user2name.rows[0].user_name})
     } catch (err) {
         console.error(err.message);
         return null;
@@ -54,7 +53,6 @@ exports.addChatID = async (user1, user2) => {
 exports.addChatter = async (chat, user) => {
     try {
         chatter = await pool.query('INSERT INTO chatter(chatter_user_id, chatter_chat_id) VALUES ($1, $2) RETURNING *', [user, chat])
-        console.log(chatter.rows)
         return `User ${chatter.rows[0].chatter_user_id} added to chat ${chatter.rows[0].chatter_chat_id}`
     } catch (err) {
         console.error(err.message);
