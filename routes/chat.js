@@ -76,7 +76,6 @@ router.route('/our/:userid1/:userid2')
 // POST new chatID and add relations for two users to that chat id
 router.route('/new')
   .post(async (req, res, next) => {
-    console.log(req.body)
     try {
       let newChat = await addChatID(req.body.userids.user1, req.body.userids.user2)
       if (newChat) {
