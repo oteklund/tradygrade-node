@@ -10,11 +10,11 @@ const {
 const { getItemsByUserId } = require('../dao/itemsDao');
 const User = require('../models/User');
 const hashService = require('../auth/hashService');
-const { authenticateToken } = require('../middleware/middleware'); //apply to all routes that require the user to be logged in 
+const { authenticateToken } = require('../middleware/middleware'); //apply to all routes that require the user to be logged in
 
 router
   .route('/')
-    .get(authenticateToken, async (req, res, next) => {
+  .get(authenticateToken, async (req, res, next) => {
     try {
       let usersData = await getUsers();
       if (usersData) {
@@ -64,7 +64,7 @@ router
 
 router
   .route('/:id')
-  .get(authenticateToken, async (req, res, next) => {
+  .get(async (req, res, next) => {
     try {
       let userData = await getUser(req.params.id);
       if (userData) {
