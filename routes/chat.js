@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-
+const { authenticateToken } = require("../middleware/middleware")
 const { getChatIDs, getChatID, addChatID, addChatter } = require('../dao/chatDao');
 const { getChatMessages, newChatMessage, getMsg, updateMsg, deleteMsg } = require('../dao/msgDao');
 
 
 // GET chatmessages by chatID
-router.route('/messages/:chatid')
+router.route('/messages/:chatid', authenticateToken)
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid)
@@ -40,7 +40,7 @@ router.route('/messages/:chatid')
 
 
 // GET chatIDs for specific user
-router.route('/my/:userid')
+router.route('/my/:userid', authenticateToken)
   .get(async (req, res, next) => {
     try {
       let chats = await getChatIDs(req.params.userid)
@@ -57,7 +57,7 @@ router.route('/my/:userid')
   })
 
 // GET chatID for two users
-router.route('/our/:userid1/:userid2')
+router.route('/our/:userid1/:userid2', authenticateToken)
 .get(async (req, res, next) => {
   try {
     let chat = await getChatID(req.params.userid1, req.params.userid2)
@@ -74,7 +74,7 @@ router.route('/our/:userid1/:userid2')
 })
 
 // POST new chatID and add relations for two users to that chat id
-router.route('/new')
+router.route('/new', authenticateToken)
   .post(async (req, res, next) => {
     console.log(req.body)
     try {
@@ -92,7 +92,7 @@ router.route('/new')
   });
 
 // ADD new user as a chatter to a chat
-router.route('/chatter')
+router.route('/chatter', authenticateToken)
   .post(async (req, res, next) => {
     try {
       let chatter = await addChatter(req.body.chatid, req.body.user)
@@ -108,7 +108,7 @@ router.route('/chatter')
     }
   })
 
-router.route('/message/:id')
+router.route('/message/:id', authenticateToken)
   .get(async (req, res, next) => {
     try {
       let msg = await getMsg(req.params.id)
