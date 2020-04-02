@@ -89,11 +89,11 @@ exports.updateUser = async (id, user) => {
 
 exports.createUser = async newUser => {
   try {
-    const { name, password, email, picture } = newUser;
+    const { name, password, email } = newUser;
 
     let response = await pool.query(
-      'INSERT INTO users (user_name, user_password, user_email, user_picture) VALUES($1,$2,$3,$4) RETURNING user_id',
-      [name, password, email, picture]
+      'INSERT INTO users (user_name, user_password, user_email) VALUES($1,$2,$3) RETURNING user_id',
+      [name, password, email]
     );
     if (response.rows.length > 0) {
       return response.rows[0].user_id;
