@@ -16,6 +16,7 @@ refresh_token TEXT
 
 ALTER TABLE users ADD CONSTRAINT username_unique UNIQUE (user_name);
 ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (user_email);
+ALTER TABLE users ALTER COLUMN user_picture SET DEFAULT 'https://i.imgur.com/fXriqQm.png'
 
 CREATE TABLE IF NOT EXISTS chat(
     chat_id SERIAL PRIMARY KEY NOT NULL

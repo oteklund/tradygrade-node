@@ -21,6 +21,14 @@ router.get("/", authenticateToken, async (req, res, next) => {
   }
 })
 
+router.get("/test", authenticateToken, async (req, res, next) => {
+  try {
+    res.json({ message: "hello!!!" })
+  } catch (error) {
+    res.json(error)
+  }
+})
+
 router.post("/login", async (req, res, next) => {
   try {
     const { name, password } = req.body
