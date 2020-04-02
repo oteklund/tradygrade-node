@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const { authenticateToken } = require("../middleware/middleware")
 const {
   getChatIDs,
   getChatID,
@@ -17,7 +17,7 @@ const {
 
 // GET chatmessages by chatID
 router
-  .route('/messages/:chatid')
+  .route('/messages/:chatid', authenticateToken)
   .get(async (req, res, next) => {
     try {
       let messages = await getChatMessages(req.params.chatid);
@@ -54,7 +54,7 @@ router
   });
 
 // GET chatIDs for specific user
-router.route('/my/:userid').get(async (req, res, next) => {
+router.route('/my/:userid', authenticateToken).get(async (req, res, next) => {
   try {
     let chats = await getChatIDs(req.params.userid);
     if (chats) {
@@ -69,7 +69,7 @@ router.route('/my/:userid').get(async (req, res, next) => {
 });
 
 // GET chatID for two users
-router.route('/our/:userid1/:userid2').get(async (req, res, next) => {
+router.route('/our/:userid1/:userid2', authenticateToken).get(async (req, res, next) => {
   try {
     let chat = await getChatID(req.params.userid1, req.params.userid2);
     if (chat) {
@@ -84,7 +84,7 @@ router.route('/our/:userid1/:userid2').get(async (req, res, next) => {
 });
 
 // POST new chatID and add relations for two users to that chat id
-router.route('/new').post(async (req, res, next) => {
+router.route('/new', authenticateToken).post(async (req, res, next) => {
   try {
     let newChat = await addChatID(
       req.body.userids.user1,
@@ -102,7 +102,7 @@ router.route('/new').post(async (req, res, next) => {
 });
 
 // ADD new user as a chatter to a chat
-router.route('/chatter').post(async (req, res, next) => {
+router.route('/chatter', authenticateToken).post(async (req, res, next) => {
   try {
     let chatter = await addChatter(req.body.chatid, req.body.user);
     if (chatter) {
@@ -117,7 +117,7 @@ router.route('/chatter').post(async (req, res, next) => {
 });
 
 router
-  .route('/message/:id')
+  .route('/message/:id', authenticateToken)
   .get(async (req, res, next) => {
     try {
       let msg = await getMsg(req.params.id);
